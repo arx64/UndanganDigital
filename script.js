@@ -58,26 +58,31 @@ const navObserver = new IntersectionObserver((entries) => {
 }, { rootMargin: '-35% 0px -55% 0px' });
 sectionTargets.forEach((section) => navObserver.observe(section));
 
-let audioContext;
+const youtubeMusic = document.querySelector('#youtubeMusic');
 let musicOn = false;
+const youtubeVideoId = 'rtOvBOTyX00';
+
+function startYoutubeMusic() {
+  youtubeMusic.src = `https://www.youtube-nocookie.com/embed/${youtubeVideoId}?autoplay=1&controls=0&loop=1&playlist=${youtubeVideoId}&enablejsapi=1&playsinline=1`;
+  musicOn = true;
+  musicButton.textContent = 'Ⅱ';
+  musicButton.setAttribute('aria-label', 'Matikan musik');
+}
+
+function stopYoutubeMusic() {
+  youtubeMusic.src = '';
+  musicOn = false;
+  musicButton.textContent = '♫';
+  musicButton.setAttribute('aria-label', 'Putar musik');
+}
+
+openButton.addEventListener('click', () => {
+  startYoutubeMusic();
+});
+
 musicButton.addEventListener('click', () => {
-  musicOn = !musicOn;
-  musicButton.textContent = musicOn ? 'Ⅱ' : '♫';
-  musicButton.setAttribute('aria-label', musicOn ? 'Matikan musik' : 'Putar musik');
-  if (musicOn) {
-    audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    oscillator.frequency.value = 220;
-    gain.gain.value = 0.015;
-    oscillator.connect(gain).connect(audioContext.destination);
-    oscillator.start();
-    window.weddingTone = { oscillator, gain };
-  } else if (window.weddingTone) {
-    window.weddingTone.gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.25);
-    window.weddingTone.oscillator.stop(audioContext.currentTime + 0.3);
-    window.weddingTone = null;
-  }
+  if (musicOn) stopYoutubeMusic();
+  else startYoutubeMusic();
 });
 
 const weddingDate = new Date('2030-09-04T09:00:00+07:00').getTime();
