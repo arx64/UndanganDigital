@@ -133,7 +133,7 @@ const observer = new IntersectionObserver(
 document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
 
 const wishesApiUrl = 'https://script.google.com/macros/s/AKfycbxjRnilCyhReRk7N_4Df9ocr23I36-X9tuZJ8jCkWgG4xi1nKuFtQufiAo6Vs4_UD84GQ/exec';
-const wishesPerPage = 10;
+const wishesPerPage = 5;
 const wishesRequestUrl = () => `${wishesApiUrl}?t=${Date.now()}`;
 let wishes = [];
 let wishesPage = 1;
