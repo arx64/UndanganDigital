@@ -27,35 +27,52 @@ openButton.addEventListener('click', () => {
   document.querySelector('#invitation').scrollIntoView({ behavior: 'smooth' });
 });
 
-const coverObserver = new IntersectionObserver(([entry]) => {
-  if (entry.isIntersecting) {
-    document.body.classList.remove('invitation-open');
-    appNav.classList.remove('is-visible');
-  } else {
-    document.body.classList.add('invitation-open');
-    appNav.classList.add('is-visible');
-  }
-}, { threshold: 0.15 });
+const coverObserver = new IntersectionObserver(
+  ([entry]) => {
+    if (entry.isIntersecting) {
+      document.body.classList.remove('invitation-open');
+      appNav.classList.remove('is-visible');
+    } else {
+      document.body.classList.add('invitation-open');
+      appNav.classList.add('is-visible');
+    }
+  },
+  { threshold: 0.15 },
+);
 coverObserver.observe(cover);
 
 appNavItems.forEach((item) => {
-  item.addEventListener('click', () => {
+  item.addEventListener('click', (event) => {
+    event.preventDefault();
+    const target = document.querySelector(item.getAttribute('href'));
+    if (!target) return;
+
     appNavItems.forEach((navItem) => navItem.classList.remove('app-nav__item--active'));
     item.classList.add('app-nav__item--active');
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Pastikan section tidak tertinggal dalam keadaan transform AOS
+    window.setTimeout(() => {
+      target.classList.add('aos-animate');
+      if (window.AOS) AOS.refreshHard();
+    }, 650);
   });
 });
 
 const sectionTargets = [...appNavItems].map((item) => document.querySelector(item.getAttribute('href'))).filter(Boolean);
-const navObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    const active = document.querySelector(`.app-nav__item[href="#${entry.target.id}"]`);
-    if (active) {
-      appNavItems.forEach((item) => item.classList.remove('app-nav__item--active'));
-      active.classList.add('app-nav__item--active');
-    }
-  });
-}, { rootMargin: '-35% 0px -55% 0px' });
+const navObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const active = document.querySelector(`.app-nav__item[href="#${entry.target.id}"]`);
+      if (active) {
+        appNavItems.forEach((item) => item.classList.remove('app-nav__item--active'));
+        active.classList.add('app-nav__item--active');
+      }
+    });
+  },
+  { rootMargin: '-35% 0px -55% 0px' },
+);
 sectionTargets.forEach((section) => navObserver.observe(section));
 
 const weddingMusic = document.querySelector('#weddingMusic');
@@ -65,11 +82,13 @@ async function startWeddingMusic() {
   try {
     await weddingMusic.play();
     musicOn = true;
-    musicButton.textContent = 'Ⅱ';
+    musicButton.innerHTML = '<i data-feather="pause"></i>';
+    if (window.feather) feather.replace();
     musicButton.setAttribute('aria-label', 'Matikan musik');
   } catch (error) {
     musicOn = false;
-    musicButton.textContent = '♫';
+    musicButton.innerHTML = '<i data-feather="play"></i>';
+    if (window.feather) feather.replace();
     console.warn('Musik tidak dapat diputar:', error.message);
   }
 }
@@ -78,7 +97,8 @@ function stopWeddingMusic() {
   weddingMusic.pause();
   weddingMusic.currentTime = 0;
   musicOn = false;
-  musicButton.textContent = '♫';
+  musicButton.innerHTML = '<i data-feather="music"></i>';
+  if (window.feather) feather.replace();
   musicButton.setAttribute('aria-label', 'Putar musik');
 }
 
@@ -95,12 +115,20 @@ const weddingDate = new Date('2030-09-04T09:00:00+07:00').getTime();
 function updateCountdown() {
   const remaining = Math.max(0, weddingDate - Date.now());
   const values = [Math.floor(remaining / 86400000), Math.floor(remaining / 3600000) % 24, Math.floor(remaining / 60000) % 60, Math.floor(remaining / 1000) % 60];
-  ['days', 'hours', 'minutes', 'seconds'].forEach((id, index) => { document.querySelector(`#${id}`).textContent = String(values[index]).padStart(2, '0'); });
+  ['days', 'hours', 'minutes', 'seconds'].forEach((id, index) => {
+    document.querySelector(`#${id}`).textContent = String(values[index]).padStart(2, '0');
+  });
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-const observer = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); }), { threshold: 0.12 });
+const observer = new IntersectionObserver(
+  (entries) =>
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add('is-visible');
+    }),
+  { threshold: 0.12 },
+);
 document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
 
 document.querySelector('#rsvpForm').addEventListener('submit', (event) => {
