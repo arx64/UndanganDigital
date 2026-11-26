@@ -477,7 +477,8 @@ body:not(.invitation-open) .app-nav {
 
 .hero__portrait p {
     color: var(--muted);
-    font: italic 18px var(--serif)
+    font: italic 18px var(--serif);
+    margin-top: 2rem;
 }
 
 .section {
@@ -548,7 +549,7 @@ blockquote {
     z-index: 1;
 }
 
-.person__photo img + span {
+.person__photo img+span {
     z-index: 2
 }
 
@@ -807,7 +808,17 @@ blockquote {
 
 .footer .wrap {
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
+    align-items: center
+}
+
+.footer svg {
+    width: 13px;
+    height: 13px;
+    margin: 0 3px;
+    vertical-align: -2px;
+    stroke: var(--rust);
+    stroke-width: 2.2
 }
 
 .reveal {
