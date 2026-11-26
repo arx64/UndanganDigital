@@ -132,13 +132,89 @@ const observer = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
 
-document.querySelector('#rsvpForm').addEventListener('submit', (event) => {
+const wishesApiUrl = 'https://script.google.com/macros/s/AKfycbxjRnilCyhReRk7N_4Df9ocr23I36-X9tuZJ8jCkWgG4xi1nKuFtQufiAo6Vs4_UD84GQ/exec';
+const wishesPerPage = 10;
+let wishes = [];
+let wishesPage = 1;
+
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
+}[char]));
+
+function renderWishes() {
+  const list = document.querySelector('#wishesList');
+  const pagination = document.querySelector('#wishesPagination');
+  const totalPages = Math.max(1, Math.ceil(wishes.length / wishesPerPage));
+  wishesPage = Math.min(wishesPage, totalPages);
+  const start = (wishesPage - 1) * wishesPerPage;
+  const pageItems = wishes.slice(start, start + wishesPerPage);
+
+  list.innerHTML = pageItems.length ? pageItems.map((wish) => `
+    <article class="wish-card">
+      <div class="wish-card__top"><strong>${escapeHtml(wish.name)}</strong><span>${escapeHtml(wish.attendance)}</span></div>
+      <p>${escapeHtml(wish.message)}</p>
+    </article>
+  `).join('') : '<p class="wishes__empty">Belum ada ucapan. Jadilah yang pertama mengirim doa.</p>';
+
+  pagination.innerHTML = totalPages > 1 ? `
+    <button type="button" data-page="${wishesPage - 1}" ${wishesPage === 1 ? 'disabled' : ''}>‹</button>
+    <span>Halaman ${wishesPage} dari ${totalPages}</span>
+    <button type="button" data-page="${wishesPage + 1}" ${wishesPage === totalPages ? 'disabled' : ''}>›</button>
+  ` : '';
+  pagination.querySelectorAll('button').forEach((button) => {
+    button.addEventListener('click', () => {
+      wishesPage = Number(button.dataset.page);
+      renderWishes();
+    });
+  });
+}
+
+async function loadWishes() {
+  const list = document.querySelector('#wishesList');
+  list.innerHTML = '<p class="wishes__empty">Memuat ucapan...</p>';
+  try {
+    const response = await fetch(wishesApiUrl, { cache: 'no-store' });
+    if (!response.ok) throw new Error('Gagal memuat data');
+    const data = await response.json();
+    wishes = Array.isArray(data) ? data : [];
+    wishesPage = 1;
+    renderWishes();
+  } catch (error) {
+    list.innerHTML = '<p class="wishes__empty">Ucapan belum dapat dimuat. Silakan coba lagi.</p>';
+    console.warn('Ucapan:', error.message);
+  }
+}
+
+document.querySelector('#rsvpForm').addEventListener('submit', async (event) => {
   event.preventDefault();
-  const name = document.querySelector('#rsvpName').value.trim();
-  const attendance = document.querySelector('#attendance').value;
-  const message = document.querySelector('#message').value.trim();
-  const text = `Halo Andini & Arifin, saya ${name}. ${attendance}.%0A%0A${message || 'Selamat menempuh hidup baru!'} `;
+  const form = event.currentTarget;
   const status = document.querySelector('#formStatus');
-  status.textContent = 'Membuka WhatsApp untuk mengirim konfirmasi...';
-  window.open(`https://wa.me/6285155288330?text=${text}`, '_blank', 'noopener');
+  const submitButton = form.querySelector('button[type="submit"]');
+  const payload = {
+    name: document.querySelector('#rsvpName').value.trim(),
+    attendance: document.querySelector('#attendance').value,
+    message: document.querySelector('#message').value.trim(),
+  };
+
+  submitButton.disabled = true;
+  status.textContent = 'Menyimpan ucapan...';
+  try {
+    const response = await fetch(wishesApiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    });
+    const result = await response.json();
+    if (!result.success) throw new Error(result.message || 'Ucapan gagal disimpan');
+    status.textContent = 'Ucapan berhasil disimpan. Terima kasih!';
+    form.reset();
+    await loadWishes();
+  } catch (error) {
+    status.textContent = `Ucapan gagal disimpan: ${error.message}`;
+  } finally {
+    submitButton.disabled = false;
+  }
 });
+
+document.querySelector('#refreshWishes').addEventListener('click', loadWishes);
+loadWishes();

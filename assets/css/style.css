@@ -791,6 +791,106 @@ blockquote {
     font-size: 12px
 }
 
+.wishes {
+    grid-column: 1 / -1;
+    margin-top: 18px;
+    padding-top: 30px;
+    border-top: 1px solid #fff5;
+}
+
+.wishes__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px
+}
+
+.wishes__header h3 {
+    margin: 0;
+    font: 500 30px var(--serif)
+}
+
+.wishes__refresh,
+.wishes__pagination button {
+    border: 1px solid #fff8;
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    cursor: pointer
+}
+
+.wishes__refresh {
+    width: 34px;
+    height: 34px;
+    font-size: 20px
+}
+
+.wishes__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px
+}
+
+.wish-card {
+    padding: 16px;
+    border: 1px solid #fff4;
+    border-radius: 12px;
+    background: #fff1;
+}
+
+.wish-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px
+}
+
+.wish-card strong {
+    font-size: 13px
+}
+
+.wish-card__top span {
+    color: #fff9;
+    font-size: 10px;
+    text-align: right
+}
+
+.wish-card p {
+    margin: 8px 0 0;
+    color: #fff9;
+    font-size: 12px;
+    overflow-wrap: anywhere
+}
+
+.wishes__empty {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: #fff9;
+    font-size: 12px
+}
+
+.wishes__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+    color: #fff9;
+    font-size: 11px
+}
+
+.wishes__pagination button {
+    width: 30px;
+    height: 30px;
+    font-size: 18px
+}
+
+.wishes__pagination button:disabled {
+    cursor: not-allowed;
+    opacity: .35
+}
+
 .closing {
     text-align: center
 }
@@ -920,6 +1020,10 @@ blockquote {
 
     .rsvp__inner {
         gap: 35px
+    }
+
+    .wishes__list {
+        grid-template-columns: 1fr
     }
 
     .cover h1 {

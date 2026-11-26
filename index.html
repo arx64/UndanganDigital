@@ -30,7 +30,7 @@
     </div>
 
     <audio id="weddingMusic" preload="auto" loop>
-      <source src="assets/audio/Payung%20Teduh%20-%20Akad%20(Official%20Music%20Video).mp3" type="audio/mpeg" />
+      <source src="assets/audio/Wedding Nasheed.mp3" type="audio/mpeg" />
     </audio>
 
     <main class="invitation" id="invitation">
@@ -62,7 +62,7 @@
             <span class="portrait-placeholder__amp">&</span>
             <img src="assets/img/hero2.jpg" alt="Muhammad Arifin Ilham" />
           </div>
-          <p>Andini &amp; Arifin · 2030</p>
+          <p>Arifin &amp; Andini · 2030</p>
         </div>
       </section>
 
@@ -171,8 +171,8 @@
         <div class="wrap rsvp__inner reveal">
           <div>
             <p class="eyebrow">KINDLY RESPOND</p>
-            <h2>Konfirmasi kehadiran</h2>
-            <p>Bantu kami mempersiapkan hari istimewa ini dengan mengisi konfirmasi kehadiran Anda.</p>
+            <h2>Ucapan & doa</h2>
+            <p>Bagikan doa dan ucapan terbaik untuk Andini & Arifin.</p>
           </div>
           <form id="rsvpForm">
             <label>Nama lengkap<input id="rsvpName" required placeholder="Tulis nama Anda" /></label
@@ -182,9 +182,14 @@
                 <option>Ya, saya akan hadir</option>
                 <option>Maaf, saya tidak bisa hadir</option>
               </select></label
-            ><label>Ucapan & doa<textarea id="message" rows="3" placeholder="Tulis ucapan untuk kami"></textarea></label><button class="button button--dark" type="submit">Kirim konfirmasi <span>↗</span></button>
+            ><label>Ucapan & doa<textarea id="message" rows="3" required placeholder="Tulis ucapan untuk kami"></textarea></label><button class="button button--dark" type="submit">Kirim ucapan <span>↗</span></button>
             <p class="form-status" id="formStatus" role="status"></p>
           </form>
+          <div class="wishes" aria-live="polite">
+            <div class="wishes__header"><h3>Ucapan dari keluarga & sahabat</h3><button class="wishes__refresh" id="refreshWishes" type="button" aria-label="Muat ulang ucapan">↻</button></div>
+            <div class="wishes__list" id="wishesList"><p class="wishes__empty">Memuat ucapan...</p></div>
+            <div class="wishes__pagination" id="wishesPagination"></div>
+          </div>
         </div>
       </section>
 
