@@ -149,11 +149,7 @@ textarea {
     min-height: 100svh;
     place-items: center;
     overflow: hidden;
-    background-image: url("../img/bg.jpeg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background: #344b4a;
     color: #fff;
     text-align: center
 }
@@ -165,13 +161,19 @@ textarea {
     content: ''
 }
 
-/* .cover:before {
-    background: radial-gradient(ellipse at 28% 18%, #ffffff2e, transparent 25%), radial-gradient(ellipse at 70% 80%, #1c302c66, transparent 35%);
-    mix-blend-mode: screen
-} */
+.cover:before {
+    z-index: 0;
+    background-image: url("../img/bg.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(6px);
+    transform: scale(1.06);
+}
 
 .cover:after {
-    background: linear-gradient(#162c2c33, #111b1d88)
+    z-index: 1;
+    background: linear-gradient(#162c2c66, #111b1dcc)
 }
 
 .cover__grain {
@@ -185,7 +187,7 @@ textarea {
 .cover__content,
 .cover__scroll {
     position: relative;
-    z-index: 1
+    z-index: 2
 }
 
 .cover__content {
