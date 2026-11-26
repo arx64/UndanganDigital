@@ -153,7 +153,7 @@ function renderWishes() {
   list.innerHTML = pageItems.length ? pageItems.map((wish) => `
     <article class="wish-card">
       <div class="wish-card__top">
-        <div class="wish-card__identity"><span class="wish-card__avatar">${escapeHtml((wish.name || '?').charAt(0).toUpperCase())}</span><strong>${escapeHtml(wish.name)}</strong></div>
+        <div class="wish-card__identity"><span class="wish-card__avatar">${escapeHtml(String(wish.name || '?').charAt(0).toUpperCase())}</span><strong>${escapeHtml(String(wish.name ?? 'Tamu'))}</strong></div>
         <span class="wish-card__attendance">${escapeHtml(wish.attendance)}</span>
       </div>
       <div class="wish-card__body"><span class="wish-card__quote">“</span><p>${escapeHtml(wish.message)}</p></div>
