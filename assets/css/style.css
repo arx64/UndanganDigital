@@ -167,6 +167,7 @@ textarea {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: scroll;
     filter: blur(6px);
     transform: scale(1.06);
 }
