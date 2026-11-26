@@ -142,6 +142,28 @@ const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => 
   '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
 }[char]));
 
+function formatWishTime(timestamp) {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return '';
+  const ageSeconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+  if (ageSeconds < 60) return 'Baru saja';
+  if (ageSeconds < 3600) return `${Math.floor(ageSeconds / 60)} menit yang lalu`;
+  if (ageSeconds < 86400) return `${Math.floor(ageSeconds / 3600)} jam yang lalu`;
+  if (ageSeconds < 172800) return 'Kemarin';
+  return new Intl.DateTimeFormat('id-ID', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', hour12: false,
+  }).format(date).replace(',', '');
+}
+
+function showToast(message, type = 'success') {
+  const toast = document.querySelector('#toast');
+  toast.textContent = message;
+  toast.className = `toast toast--${type} is-visible`;
+  window.clearTimeout(showToast.timer);
+  showToast.timer = window.setTimeout(() => toast.classList.remove('is-visible'), 3500);
+}
+
 function renderWishes() {
   const list = document.querySelector('#wishesList');
   const pagination = document.querySelector('#wishesPagination');
@@ -157,7 +179,7 @@ function renderWishes() {
         <span class="wish-card__attendance">${escapeHtml(wish.attendance)}</span>
       </div>
       <div class="wish-card__body"><span class="wish-card__quote">“</span><p>${escapeHtml(wish.message)}</p></div>
-      <div class="wish-card__footer"><span>Dengan doa terbaik</span><span class="wish-card__heart">♥</span></div>
+      <div class="wish-card__footer"><span>Dengan doa terbaik</span><span class="wish-card__time">${escapeHtml(formatWishTime(wish.timestamp))}</span><span class="wish-card__heart">♥</span></div>
     </article>
   `).join('') : '<p class="wishes__empty">Belum ada ucapan. Jadilah yang pertama mengirim doa.</p>';
 
@@ -211,11 +233,13 @@ document.querySelector('#rsvpForm').addEventListener('submit', async (event) => 
     });
     const result = await response.json();
     if (!result.success) throw new Error(result.message || 'Ucapan gagal disimpan');
-    status.textContent = 'Ucapan berhasil disimpan. Terima kasih!';
+    status.textContent = '';
+    showToast('Ucapan berhasil disimpan. Terima kasih!');
     form.reset();
     await loadWishes();
   } catch (error) {
-    status.textContent = `Ucapan gagal disimpan: ${error.message}`;
+    status.textContent = '';
+    showToast(`Ucapan gagal disimpan: ${error.message}`, 'error');
   } finally {
     submitButton.disabled = false;
   }

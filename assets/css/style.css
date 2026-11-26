@@ -933,8 +933,11 @@ blockquote {
 .wish-card__footer {
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 10px;
     flex: 0 0 auto;
-    justify-content: space-between;
     padding-top: 10px;
     border-top: 1px solid #ffffff38;
     color: #ffffffaa;
@@ -942,9 +945,43 @@ blockquote {
     letter-spacing: .04em
 }
 
+.wish-card__time {
+    color: #ffffffaa;
+    font-size: 9px;
+    white-space: nowrap
+}
+
 .wish-card__heart {
     color: #ffd5c8;
     font-size: 16px
+}
+
+.toast {
+    position: fixed;
+    z-index: 100;
+    right: 20px;
+    bottom: 24px;
+    max-width: min(360px, calc(100% - 40px));
+    padding: 13px 18px;
+    border: 1px solid #ffffff55;
+    border-radius: 12px;
+    background: #263b3bf2;
+    box-shadow: 0 14px 35px #1b171555;
+    color: #fff;
+    font-size: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(18px);
+    transition: opacity .25s ease, transform .25s ease
+}
+
+.toast.is-visible {
+    opacity: 1;
+    transform: translateY(0)
+}
+
+.toast--error {
+    background: #7b302cf2
 }
 
 .wishes__empty {
