@@ -134,6 +134,7 @@ document.querySelectorAll('.reveal').forEach((element) => observer.observe(eleme
 
 const wishesApiUrl = 'https://script.google.com/macros/s/AKfycbxjRnilCyhReRk7N_4Df9ocr23I36-X9tuZJ8jCkWgG4xi1nKuFtQufiAo6Vs4_UD84GQ/exec';
 const wishesPerPage = 10;
+const wishesRequestUrl = () => `${wishesApiUrl}?t=${Date.now()}`;
 let wishes = [];
 let wishesPage = 1;
 
@@ -177,7 +178,7 @@ async function loadWishes() {
   const list = document.querySelector('#wishesList');
   list.innerHTML = '<p class="wishes__empty">Memuat ucapan...</p>';
   try {
-    const response = await fetch(wishesApiUrl, { cache: 'no-store' });
+    const response = await fetch(wishesRequestUrl(), { cache: 'no-store', redirect: 'follow' });
     if (!response.ok) throw new Error('Gagal memuat data');
     const data = await response.json();
     wishes = Array.isArray(data) ? data : [];
@@ -185,7 +186,7 @@ async function loadWishes() {
     renderWishes();
   } catch (error) {
     list.innerHTML = '<p class="wishes__empty">Ucapan belum dapat dimuat. Silakan coba lagi.</p>';
-    console.warn('Ucapan:', error.message);
+    console.error('Ucapan gagal dimuat:', error);
   }
 }
 
