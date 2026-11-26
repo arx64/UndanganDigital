@@ -58,31 +58,37 @@ const navObserver = new IntersectionObserver((entries) => {
 }, { rootMargin: '-35% 0px -55% 0px' });
 sectionTargets.forEach((section) => navObserver.observe(section));
 
-const youtubeMusic = document.querySelector('#youtubeMusic');
+const weddingMusic = document.querySelector('#weddingMusic');
 let musicOn = false;
-const youtubeVideoId = 'rtOvBOTyX00';
 
-function startYoutubeMusic() {
-  youtubeMusic.src = `https://www.youtube-nocookie.com/embed/${youtubeVideoId}?autoplay=1&controls=0&loop=1&playlist=${youtubeVideoId}&enablejsapi=1&playsinline=1`;
-  musicOn = true;
-  musicButton.textContent = 'Ⅱ';
-  musicButton.setAttribute('aria-label', 'Matikan musik');
+async function startWeddingMusic() {
+  try {
+    await weddingMusic.play();
+    musicOn = true;
+    musicButton.textContent = 'Ⅱ';
+    musicButton.setAttribute('aria-label', 'Matikan musik');
+  } catch (error) {
+    musicOn = false;
+    musicButton.textContent = '♫';
+    console.warn('Musik tidak dapat diputar:', error.message);
+  }
 }
 
-function stopYoutubeMusic() {
-  youtubeMusic.src = '';
+function stopWeddingMusic() {
+  weddingMusic.pause();
+  weddingMusic.currentTime = 0;
   musicOn = false;
   musicButton.textContent = '♫';
   musicButton.setAttribute('aria-label', 'Putar musik');
 }
 
 openButton.addEventListener('click', () => {
-  startYoutubeMusic();
+  startWeddingMusic();
 });
 
 musicButton.addEventListener('click', () => {
-  if (musicOn) stopYoutubeMusic();
-  else startYoutubeMusic();
+  if (musicOn) stopWeddingMusic();
+  else startWeddingMusic();
 });
 
 const weddingDate = new Date('2030-09-04T09:00:00+07:00').getTime();
