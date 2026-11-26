@@ -442,6 +442,39 @@ body:not(.invitation-open) .app-nav {
     font-weight: 400
 }
 
+.portrait-placeholder--couple {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow: hidden;
+    padding: 0;
+    background: #d6bb9f;
+}
+
+.portrait-placeholder--couple img {
+    width: 50%;
+    height: 100%;
+    min-width: 0;
+    object-fit: cover;
+}
+
+.portrait-placeholder__amp {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fffaf5e8;
+    color: var(--rust);
+    font: italic 30px/1 var(--serif);
+    transform: translate(-50%, -50%);
+}
+
 .hero__portrait p {
     color: var(--muted);
     font: italic 18px var(--serif)
