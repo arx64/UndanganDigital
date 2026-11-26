@@ -813,11 +813,11 @@ blockquote {
 
 .wishes__refresh,
 .wishes__pagination button {
-    border: 1px solid #fff8;
+    border: none;
     border-radius: 50%;
     background: transparent;
     color: #fff;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .wishes__refresh {
@@ -834,8 +834,11 @@ blockquote {
 
 .wish-card {
     position: relative;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     min-height: 188px;
+    height: auto;
     padding: 20px;
     border: 1px solid #ffffff55;
     border-radius: 18px;
@@ -909,9 +912,10 @@ blockquote {
     position: relative;
     z-index: 1;
     display: flex;
+    flex: 1 1 auto;
     gap: 8px;
     min-height: 82px;
-    margin-top: 18px
+    margin: 18px 0 18px
 }
 
 .wish-card__quote {
@@ -927,10 +931,9 @@ blockquote {
 }
 
 .wish-card__footer {
-    position: absolute;
-    right: 20px;
-    bottom: 16px;
-    left: 20px;
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
     justify-content: space-between;
     padding-top: 10px;
     border-top: 1px solid #ffffff38;
