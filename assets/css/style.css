@@ -829,38 +829,119 @@ blockquote {
 .wishes__list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px
+    gap: 16px
 }
 
 .wish-card {
-    padding: 16px;
-    border: 1px solid #fff4;
-    border-radius: 12px;
-    background: #fff1;
+    position: relative;
+    overflow: hidden;
+    min-height: 188px;
+    padding: 20px;
+    border: 1px solid #ffffff55;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #fffaf51f, #fffaf50b);
+    box-shadow: 0 12px 28px #5d2b2430;
+    backdrop-filter: blur(10px)
+}
+
+.wish-card:before {
+    position: absolute;
+    top: -44px;
+    right: -28px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #ffffff12;
+    content: ''
+}
+
+.wish-card__top,
+.wish-card__identity,
+.wish-card__footer {
+    display: flex;
+    align-items: center
 }
 
 .wish-card__top {
-    display: flex;
-    align-items: flex-start;
+    position: relative;
+    z-index: 1;
     justify-content: space-between;
     gap: 10px
 }
 
-.wish-card strong {
-    font-size: 13px
+.wish-card__identity {
+    min-width: 0;
+    gap: 10px
 }
 
-.wish-card__top span {
-    color: #fff9;
-    font-size: 10px;
+.wish-card__avatar {
+    display: grid;
+    flex: 0 0 34px;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #ffffff88;
+    border-radius: 50%;
+    background: #fffaf52b;
+    color: #fff;
+    font: 600 16px var(--serif)
+}
+
+.wish-card strong {
+    overflow: hidden;
+    color: #fff;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.wish-card__attendance {
+    flex: 0 0 auto;
+    padding: 4px 8px;
+    border: 1px solid #ffffff55;
+    border-radius: 99px;
+    color: #fff;
+    font-size: 9px;
     text-align: right
 }
 
+.wish-card__body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 8px;
+    min-height: 82px;
+    margin-top: 18px
+}
+
+.wish-card__quote {
+    color: #ffffffaa;
+    font: 42px/.65 var(--serif)
+}
+
 .wish-card p {
-    margin: 8px 0 0;
-    color: #fff9;
-    font-size: 12px;
+    margin: 0;
+    color: #fff;
+    font: italic 17px/1.25 var(--serif);
     overflow-wrap: anywhere
+}
+
+.wish-card__footer {
+    position: absolute;
+    right: 20px;
+    bottom: 16px;
+    left: 20px;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid #ffffff38;
+    color: #ffffffaa;
+    font-size: 9px;
+    letter-spacing: .04em
+}
+
+.wish-card__heart {
+    color: #ffd5c8;
+    font-size: 16px
 }
 
 .wishes__empty {

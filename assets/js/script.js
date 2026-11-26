@@ -151,8 +151,12 @@ function renderWishes() {
 
   list.innerHTML = pageItems.length ? pageItems.map((wish) => `
     <article class="wish-card">
-      <div class="wish-card__top"><strong>${escapeHtml(wish.name)}</strong><span>${escapeHtml(wish.attendance)}</span></div>
-      <p>${escapeHtml(wish.message)}</p>
+      <div class="wish-card__top">
+        <div class="wish-card__identity"><span class="wish-card__avatar">${escapeHtml((wish.name || '?').charAt(0).toUpperCase())}</span><strong>${escapeHtml(wish.name)}</strong></div>
+        <span class="wish-card__attendance">${escapeHtml(wish.attendance)}</span>
+      </div>
+      <div class="wish-card__body"><span class="wish-card__quote">“</span><p>${escapeHtml(wish.message)}</p></div>
+      <div class="wish-card__footer"><span>Dengan doa terbaik</span><span class="wish-card__heart">♥</span></div>
     </article>
   `).join('') : '<p class="wishes__empty">Belum ada ucapan. Jadilah yang pertama mengirim doa.</p>';
 
