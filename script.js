@@ -80,7 +80,7 @@ musicButton.addEventListener('click', () => {
   }
 });
 
-const weddingDate = new Date('2026-10-18T09:00:00+07:00').getTime();
+const weddingDate = new Date('2030-09-04T09:00:00+07:00').getTime();
 function updateCountdown() {
   const remaining = Math.max(0, weddingDate - Date.now());
   const values = [Math.floor(remaining / 86400000), Math.floor(remaining / 3600000) % 24, Math.floor(remaining / 60000) % 60, Math.floor(remaining / 1000) % 60];
@@ -97,7 +97,7 @@ document.querySelector('#rsvpForm').addEventListener('submit', (event) => {
   const name = document.querySelector('#rsvpName').value.trim();
   const attendance = document.querySelector('#attendance').value;
   const message = document.querySelector('#message').value.trim();
-  const text = `Halo Alya & Raka, saya ${name}. ${attendance}.%0A%0A${message || 'Selamat menempuh hidup baru!'} `;
+  const text = `Halo Andini & Arifin, saya ${name}. ${attendance}.%0A%0A${message || 'Selamat menempuh hidup baru!'} `;
   const status = document.querySelector('#formStatus');
   status.textContent = 'Membuka WhatsApp untuk mengirim konfirmasi...';
   window.open(`https://wa.me/6285155288330?text=${text}`, '_blank', 'noopener');
