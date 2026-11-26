@@ -35,6 +35,7 @@ const coverObserver = new IntersectionObserver(
     } else {
       document.body.classList.add('invitation-open');
       appNav.classList.add('is-visible');
+      if (!musicOn) startWeddingMusic();
     }
   },
   { threshold: 0.15 },
